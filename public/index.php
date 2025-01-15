@@ -4,32 +4,16 @@
 <head>
   <title> Charles Marks' Website </title>
 
-  <!-- style -->
- 
-  <!--
-  <style>
-    div.defaultFont {
-        font-family: Arial;
-    }
-   
-
-    <link href="default.css" rel="stylesheet" type="text/css>
-  </style> -->
-
-  <LINK REL=StyleSheet HREF="simple.css" TYPE="text/css" MEDIA=screen>
- 
-
 </head>
 
 <!-- BODY section ............................................................................. -->
 <body>
-<div class="defaultFont">
+
 
 <!-- PHP testing area ................................ -->
 <?php
 
    echo "<h1> Charles' CSCE 331 Docker Web Site </h1>\n";
-
 
    function proc_csv($filename, $delimiter, $quote, $columns_to_show) {
                $handle = fopen($filename, "r") or die("Cannot Open CSV file");
@@ -44,7 +28,7 @@
                        $data_cols = preg_split("/" . $delimiter . "/", $data);
                        for($k=0; $k<count($data_cols); ++$k) {
 				if($firstPass === true) {
-					echo "  <td> <b> ".preg_replace("/".$quote."/", "", $data_cols[$k] )." </td> </b>\n"; //prints the first item of each column in bold
+					echo " <td> <b> ".preg_replace("/".$quote."/", "", $data_cols[$k] )." </b> </td>\n"; //prints the first item of each column in bold
 				}
 				else
                                		echo "  <td> ".preg_replace("/".$quote."/", "", $data_cols[$k] )." </td>\n";
