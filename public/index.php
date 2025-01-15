@@ -1,47 +1,28 @@
 <html>
 
-<!-- HEAD section ............................................................................ -->
 <head>
+
   <title> Charles Marks' Website </title>
 
 </head>
 
-<!-- BODY section ............................................................................. -->
 <body>
-
 
 <!-- PHP testing area ................................ -->
 <?php
 
-   echo "<h1> Charles' CSCE 331 Docker Web Site </h1>\n";
-
-   function proc_csv($filename, $delimiter, $quote, $columns_to_show) {
-               $handle = fopen($filename, "r") or die("Cannot Open CSV file");
-               echo "<table  border=\"1\">\n";
-	       if($delimiter === "\t")
-	       	    $delimiter = '\t(?=(?:[^"]*"[^"]*")*[^"]*$)'; //delimiter to select all tabs that arent included in quotes
-	       if($delimiter === ",")
-                    $delimiter = ',(?=(?:[^"]*"[^"]*")*[^"]*$)'; //delimiter to select all commas that arent included in quotes
-	       $firstPass = true;
-               while($data = fgets($handle)) {
-                       echo "<tr>\n";
-                       $data_cols = preg_split("/" . $delimiter . "/", $data);
-                       for($k=0; $k<count($data_cols); ++$k) {
-				if($firstPass === true) {
-					echo " <td> <b> ".preg_replace("/".$quote."/", "", $data_cols[$k] )." </b> </td>\n"; //prints the first item of each column in bold
-				}
-				else
-                               		echo "  <td> ".preg_replace("/".$quote."/", "", $data_cols[$k] )." </td>\n";
-		       }  
-		       $firstPass = false; //boolean to keep track of if it is the first item in each column
-     	               echo "</tr>\n";
-               }
-               fclose($handle);
-               echo "</table>\n<p/>";
-   }
+	echo "<h1> Charles' CSCE 331 Docker Web Site </h1>\n";
+	
+	include 'proc_csv.php'; //making index require proc csv so it has access
+   	
+	echo "<h3> Single Quote, Tab CSV, Displaying Columns 2 and 4 </h3>\n";
+	proc_csv("dat2-singlequote-tab.csv", "\t" , "\'" , "2:4"); //calling proc_csv
+	echo "<h3> Double Quote, Tab CSV, Displaying Columns 1 and 3 </h3>\n";
+	proc_csv("dat2-doublequote-tab.csv", "\t" , "\"" , "1:3"); //calling proc_csv
+	echo "<h3> Double Quote, Comma CSV, Displaying ALL Columns </h3>\n";
+	proc_csv("dat-doublequote-comma.csv", "," , "\"" , "ALL"); //calling proc_csv
 
 
-   proc_csv("dat2-singlequote-tab.csv", "	" , "\'" , "ALL") 
 ?>
 </body>
 </html>
