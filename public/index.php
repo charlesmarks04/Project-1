@@ -8,7 +8,6 @@
 
 <body>
 
-<!-- PHP testing area ................................ -->
 <?php
 
 	echo "<h1> Charles' CSCE 331 Docker Web Site </h1>\n";
