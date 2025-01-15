@@ -9,12 +9,9 @@
   <!--
   <style>
     div.defaultFont {
-        font-family: Helvetica, Arial, sans-serif;
+        font-family: Arial;
     }
    
-    div.secondaryFont {
-        font-family: serif;
-    }
 
     <link href="default.css" rel="stylesheet" type="text/css>
   </style> -->
