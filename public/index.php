@@ -21,6 +21,12 @@
 	proc_csv("dat-doublequote-comma.csv", "," , "\"" , "ALL"); //calling proc_csv
 
 
+
+	require_once("proc_markdown.php");
+	echo "<h3> Github Markdown </h3>\n\n";
+	proc_markdown("markdown.md");
+
+
 ?>
 </body>
 </html>
