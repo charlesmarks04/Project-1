@@ -9,40 +9,19 @@
 			$data = trim($data, " ");
 			if($data == "\n")
 				$data = "<p>";			
-			if(preg_match("/^# (.*)/" , $data, $matches))
-			{
-				$data = "<h1>$matches[1]</h1>"; 
-			}
-			if(preg_match("/^## (.*)/" , $data , $matches))
-                        {
-                                $data = "<h2>$matches[1]</h3>";
-                        }
-			if(preg_match("/^### (.*)/" , $data, $matches))
-                        {
-                                $data = "<h3>$matches[1]</h3>";
-                        }
 
-			if(preg_match("/!\[(.+?)\]\((.+?)\)/" , $data, $matches)) //images
-                        {
-	                       $data = preg_replace("/!\[(.+?)\]\((.+?)\)/", "<img src=$matches[2] alt= $matches[1] ></img>", $data);
-                        }
-                        if(preg_match("/(?<!\!)\[(.+?)\]\((.+?)\)/" , $data, $matches)) //URL
-                        {
-                                $data = preg_replace("/\[(.+?)\]\((.+?)\)/", "<a href= $matches[2]> $matches[1] </a>", $data);
-                        }
+			$data = preg_replace("/^# (.*)/", "<h1> $1 </h1>" , $data);
+			$data = preg_replace("/^## (.*)/", "<h2> $1 </h2>" , $data);
+			$data = preg_replace("/^### (.*)/", "<h3> $1 </h3>" , $data);
 
-			if(preg_match("/\*\*(.+?)\*\*/" , $data, $matches))
-                        {	
-				$data = preg_replace("/\*\*(.+?)\*\*/", "<b>$matches[1]</b>", $data);
-                        }
-			if(preg_match("/_(.+?)_/" , $data, $matches))
-                        {
-				$data = preg_replace("/_(.+?)_/", "<i>$matches[1]</i>", $data);
-                        }
-			if(preg_match("/^\* (.*)/" , $data , $matches))
-			{
-				$data = preg_replace("/^\* (.*)/",  "$matches[1]" , $data);
-			}
+			$data = preg_replace("/!\[(.+?)\]\((.+?)\)/", "<img src=$2 alt= $1 ></img>", $data);
+			$data = preg_replace("/\[(.+?)\]\((.+?)\)/", "<a href=$2> $1 </a>", $data);
+
+
+			$data = preg_replace("/\*\*(.+?)\*\*/", "<b>$1</b>", $data);
+			$data = preg_replace("/_(.+?)_/", "<i>$1</i>", $data);
+
+			$data = preg_replace("/^\* (.*)/",  "$1" , $data);
 
 
 			echo $data;
