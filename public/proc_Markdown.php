@@ -3,37 +3,49 @@
 	function proc_markdown($filename){
 	
 		$handle = fopen($filename, "r") or die("Cannot Open MD file");
-		
+		$in_list = false;
+		$list_data = null;
 		while($data = fgets($handle)) {
-			echo $data . "<br>";
 			$data = trim($data, " ");
+			if($data == "\n")
+				$data = "<p>";			
 			if(preg_match("/^# (.*)/" , $data, $matches))
 			{
-				echo "<h1> ". $matches[1] . "</h1>"; 
+				$data = "<h1>$matches[1]</h1>"; 
 			}
-			else if(preg_match("/^## (.*)/" , $data , $matches))
+			if(preg_match("/^## (.*)/" , $data , $matches))
                         {
-                                echo "<h2> ". $matches[1] . "</h3>";
+                                $data = "<h2>$matches[1]</h3>";
                         }
-			else if(preg_match("/^### (.*)/" , $data, $matches))
+			if(preg_match("/^### (.*)/" , $data, $matches))
                         {
-                                echo "<h3> ". $matches[1] . "</h3>";
+                                $data = "<h3>$matches[1]</h3>";
                         }
-			else if(preg_match("/\*\*(.+?)\*\*/" , $data, $matches))
+
+			if(preg_match("/!\[(.+?)\]\((.+?)\)/" , $data, $matches)) //images
+                        {
+	                       $data = preg_replace("/!\[(.+?)\]\((.+?)\)/", "<img src=$matches[2] alt= $matches[1] ></img>", $data);
+                        }
+                        if(preg_match("/(?<!\!)\[(.+?)\]\((.+?)\)/" , $data, $matches)) //URL
+                        {
+                                $data = preg_replace("/\[(.+?)\]\((.+?)\)/", "<a href= $matches[2]> $matches[1] </a>", $data);
+                        }
+
+			if(preg_match("/\*\*(.+?)\*\*/" , $data, $matches))
                         {	
-        	                echo "<b> ". $matches[1] . "</b>";
+				$data = preg_replace("/\*\*(.+?)\*\*/", "<b>$matches[1]</b>", $data);
                         }
-			else if(preg_match("/_(.+?)_/" , $data, $matches))
+			if(preg_match("/_(.+?)_/" , $data, $matches))
                         {
-				echo "<i> ". $matches[1] . "</i>";
+				$data = preg_replace("/_(.+?)_/", "<i>$matches[1]</i>", $data);
                         }
-			//<a href="url">link text</a>
-			else if(preg_match("/^###\s/" , $data))
+			if(preg_match("/^\* (.*)/" , $data , $matches))
 			{
-
-
+				$data = preg_replace("/^\* (.*)/",  "$matches[1]" , $data);
 			}
 
+
+			echo $data;
 
 
 		}	
