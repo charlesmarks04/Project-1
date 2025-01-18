@@ -5,6 +5,7 @@
 		$handle = fopen($filename, "r") or die("Cannot Open MD file");
 		$in_ulist = false;
 		$in_usublist = false;
+		$in_olist = false;
 		while($data = fgets($handle))
 		{
 			if($data == "\n")
@@ -15,10 +16,72 @@
                 			echo "</ul>";
                 			$in_ulist = false;
             			}
+				if($in_usublist)
+				{
+					echo "</ul>";
+					$in_usublist = false;
+				}
+				if ($in_olist)
+                                {
+                                        echo "</ol>";
+                                        $in_olist = false;
+                                }
+
 				
 				echo "</p> <p>";
 				continue;			
 			}
+
+			if(preg_match("/^\s*\* (.*)/" , $data)) //Unordered List (LOOKING FOR "* ")
+                        {
+                                if(!$in_ulist) //If not currently in a list create one
+                                {
+                                        echo "<ul>";
+                                        $in_ulist = true;
+                                }
+                                if(preg_match("/^ {4}\* (.*)/", $data)) //checking for nest keywords
+                                {
+                                        if(!$in_usublist) //creates a new list for nested list
+                                        {
+                                                echo "<ul>";
+                                                $in_usublist = true;
+                                        }
+
+                                }
+                                else if($in_usublist) //if there was no math for another sublisted item close the sublist
+                                {
+                                        echo "</ul>";
+                                        $in_usublist = false;
+                                }
+
+                                $data = preg_replace("/^\s*\* (.*)/",  "<li>$1</li>" , $data); 
+                        }
+
+			if(preg_match("/(^\s*\d*\. (.*))|(^\s*- (.*))/" , $data)) //Ordered List (LOOKING FOR "#. " or "- ")
+			{
+                                if(!$in_olist) //if not in an ordered list make one
+                                {
+                                        echo "<ol>";
+                                        $in_olist = true;
+                                }
+                                if(preg_match("/^\s*- (.*)/", $data)) //looks for nest keyword
+                                {
+                                        if(!$in_usublist) //if a sublist doesnt already exist create one
+                                        {
+                                                echo "<ul>"; 
+                                                $in_usublist = true;
+                                        }
+
+                                }
+                                else if($in_usublist) //if there was no more nested values close the sublist
+                                {
+                                        echo "</ul>";
+                                        $in_usublist = false;
+                                }
+
+                                $data = preg_replace("/^\s*\d*\. (.*)/",  "<li>$1</li>" , $data);
+				$data = preg_replace("/^\s*\- (.*)/",  "<li>$1</li>" , $data);
+                        }
 
 			$data = preg_replace("/^\s*# (.*)/", "<h1> $1 </h1>" , $data); //First Level Heading
 			$data = preg_replace("/^\s*## (.*)/", "<h2> $1 </h2>" , $data); //Second Level Heading
@@ -32,38 +95,16 @@
 			$data = preg_replace("/_(.+?)_/", "<i>$1</i>", $data); //Italics Text
 
 
-			if(preg_match("/^\s*\* (.*)/" , $data)) //Unordered List
-			{
-				if(!$in_ulist)
-				{
-					echo "<ul>";
-					$in_ulist = true;
-				}
-				if(preg_match("/^ {4}\* (.*)/", $data))
-				{
-					if(!$in_usublist)
-                                	{
-                                        	echo "<ul>";
-                                        	$in_usublist = true;
-                                	}
-
-				}
-				else if($in_usublist)
-				{
-					echo "</ul>";
-					$in_usublist = false;
-				}
-				$data = preg_replace("/^\s*\* (.*)/",  "<li>$1</li>" , $data);
-			}
-
 			echo $data;			
 	
 
 
 		}	
-		fclose($handle);
-		if($in_ulist)
+		fclose($handle); //close file
+		if($in_ulist) //if unordered list is open at end of file close it
                 	echo "</ul>";
+		if($in_olist) //if ordered list is open at end of file close it
+                        echo "</ol>";
 	}
 
 ?>
