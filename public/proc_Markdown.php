@@ -9,7 +9,6 @@
 <body>
 	
 <?php
-
 	function proc_markdown($filename){
 	
 		$handle = fopen($filename, "r") or die("Cannot Open MD file");
