@@ -1,4 +1,16 @@
+<html>
+
+<head>
+
+  <title> CSV Tables </title>
+
+</head>
+
+<body>
+
+
 <?php
+   echo "<h1><ins> CSV Tables </ins></h1>";
    function proc_csv($filename, $delimiter, $quote, $columns_to_show) {
                $handle = fopen($filename, "r") or die("Cannot Open CSV file");
                $column_numbers = preg_split("/:/", $columns_to_show); //creates an array of column values
@@ -27,4 +39,16 @@
                fclose($handle);
                echo "</table>\n<p/>";
 	}
+	
+	echo "<h3> Single Quote, Tab CSV, Displaying Columns 2 and 4 </h3>\n";
+        proc_csv("dat2-singlequote-tab.csv", "\t" , "\'" , "2:4"); //calling proc_csv
+        echo "<h3> Double Quote, Tab CSV, Displaying Columns 1 and 3 </h3>\n";
+        proc_csv("dat2-doublequote-tab.csv", "\t" , "\"" , "1:3"); //calling proc_csv
+        echo "<h3> Double Quote, Comma CSV, Displaying ALL Columns </h3>\n";
+        proc_csv("dat-doublequote-comma.csv", "," , "\"" , "ALL"); //calling proc_csv
+	
 ?>
+	<a href=http://localhost:5555> Back </a><br>
+</body>
+
+</html>

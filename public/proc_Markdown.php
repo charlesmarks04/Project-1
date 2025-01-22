@@ -1,3 +1,13 @@
+<html>
+
+<head>
+
+  <title> Git Markdown </title>
+
+</head>
+
+<body>
+	
 <?php
 
 	function proc_markdown($filename){
@@ -106,5 +116,9 @@
 		if($in_olist) //if ordered list is open at end of file close it
                         echo "</ol>";
 	}
-
+		echo "<h1><ins> Git Markdown </ins></h1>";
+        	proc_markdown("markdown.md");
 ?>
+	<a href=http://localhost:5555> Back </a><br>
+</body>
+</html>
