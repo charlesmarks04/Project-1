@@ -37,7 +37,6 @@
 		}
 	}
 	else if($searchingFor == ''){
-		continue;
 	}
 	else{
 		$display = str_replace("<", "&lt", $searchingFor);
