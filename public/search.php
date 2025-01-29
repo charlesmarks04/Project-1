@@ -32,6 +32,7 @@
 				$somethingFound = true;
 			}
 
+
 		}
 		if($somethingFound == false){ //if nothing is found let the user know
 			echo "<h3> No Results for '".$searchingFor."'... </h3>";
