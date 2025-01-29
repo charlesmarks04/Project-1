@@ -17,7 +17,7 @@
 $somethingFound = false;
 $searchingFor = $_GET["keyword"];
 if (filter_var($searchingFor,FILTER_SANITIZE_STRING)) {
-	$searchingFor = preg_replace("/\<\w*\>/", "" , $searchingFor); 
+	$searchingFor = strip_tags($searchingFor); 
 	echo "<h2> Showing Results for '" . $searchingFor . "'... </h2>";
 	$pages = ["index.php", "proc_csv.php", "proc_Markdown.php"];
 	foreach($pages as $page){
@@ -25,6 +25,7 @@ if (filter_var($searchingFor,FILTER_SANITIZE_STRING)) {
 		$internal_url = "http://host.docker.internal:5555/" . $page;
 		$external_url = "http://localhost:5555/" . $page;
 		$html = file_get_contents($internal_url);
+		$html = strip_tags($html);
 		if(stripos($html,$searchingFor)){
 			echo "<h3>Found '". $searchingFor . "' at <a href= " .$external_url. ">".$page." </a></h3>";
 			$somethingFound = true;
