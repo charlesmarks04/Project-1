@@ -68,7 +68,7 @@
     			foreach ($image_data as $index => $img) {
         			$row[] = $img['filename'];
         
-			        if (($index + 1) % 3 == 0) {
+			        if (($index + 1) % 3 == 0) { //making every 3 stay on one row
             				fputcsv($output, $row);
             				$row = []; // Reset row
         			}
@@ -89,7 +89,7 @@
 			die("Invalid Display Mode");
 		}
 		
-		proc_csv("formatted_gallery.csv", $mode , "" , "ALL");
+		proc_csv("formatted_gallery.csv", $mode , "" , "ALL"); //using the delimiter to be able to pass the format type
 	}
 
 ?>
