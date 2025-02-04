@@ -26,6 +26,9 @@
 	echo "<h1><ins> Git Markdown </ins></h1>";
                 proc_markdown("markdown.md");
 
+	require_once("proc_gallery.php");
+        echo "<h1><ins> Gallery </ins></h1>";
+                proc_gallery("Image_CSV.csv", "matrix", "date_newest");
 
 ?>
 	<a href=http://localhost:5555/search.php> Search Page </a><br>

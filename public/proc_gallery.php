@@ -1,6 +1,6 @@
 <?php
 
-        echo "<h1> Gallery </h1>\n";
+        //echo "<h1> Gallery </h1>\n";
 
 	function proc_gallery($image_list_filename, $mode, $sort_mode){
 		// $mode == "list"	   : list of large images view
@@ -14,7 +14,7 @@
    		// $sort_mode == "size_smallest": smallest file size first
    		// $sort_mode == "rand"  : random ordering
 		
-		$handle = fopen($filename, "r") or die("Cannot Open CSV file");
+		$handle = fopen($image_list_filename, "r") or die("Cannot Open CSV file");
 
 		$image_data = [];
 
@@ -65,7 +65,7 @@
 			fputcsv($output, ["Filename"]);
 			foreach ($image_data as $img) {
                         	fputcsv($output, [
-                                	'<img src="' . $img['filename']  . '" alt= "' . $img['description'] . '" width="400">';
+                                	'<img src="' . $img['filename']  . '" alt= "' . $img['description'] . '" width="400">'
                         	]);
                 	}
 
@@ -91,15 +91,15 @@
 			fputcsv($output, ["Details"]);
                         foreach ($image_data as $img) {
                                 fputcsv($output, [
-                                        'Filename: '. $img['filename'] . '. Data: ' . $img['description'];
+                                        'Filename: '. $img['filename'] . '. Data: ' . $img['description']
                                 ]);
                         }
 		}
 		else{
 			die("Invalid Display Mode");
 		}
-
-
+		
+		//proc_csv("output_file.csv");
 	}
 
 ?>
