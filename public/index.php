@@ -28,7 +28,12 @@
 
 	require_once("proc_gallery.php");
         echo "<h1><ins> Gallery </ins></h1>";
-                proc_gallery("Image_CSV.csv", "matrix", "date_newest");
+                proc_gallery("Image_CSV.csv", "list", "orig");
+		proc_gallery("Image_CSV.csv", "matrix", "orig");
+		proc_gallery("Image_CSV.csv", "list", "size_largest");
+		proc_gallery("Image_CSV.csv", "list", "size_smallest");
+		proc_gallery("Image_CSV.csv", "details", "size_smallest");
+
 
 ?>
 	<a href=http://localhost:5555/search.php> Search Page </a><br>

@@ -14,26 +14,22 @@
    		// $sort_mode == "size_smallest": smallest file size first
    		// $sort_mode == "rand"  : random ordering
 		
-		$handle = fopen($image_list_filename, "r") or die("Cannot Open CSV file");
+		$handle = fopen($image_list_filename, 'r') or die("Cannot Open CSV file");
 
 		$image_data = [];
-
-    		foreach ($images as $data) {
-        		if (count($data) >= 2) {
-            			$filename = trim($data[0]);
-            			$description = trim($data[1]);
-
-            			if (file_exists($filename)) {
-                			$image_data[] = [
-                    				'filename' => $filename,
-                    				'description' => $description,
-                    				'size' => filesize($filename), // File size in bytes
-                    				'date' => filemtime($filename) // Last modified timestamp
-                			];
-            			}
-        		}
+		while($data = fgets($handle)) {
+			$parts = explode(",", $data);
+			$filename = $parts[0];
+			$description = $parts[1];
+            		if (file_exists($filename) or die("no file found")) {
+                		$image_data[] = [
+                    			'filename' => $filename,
+                    			'description' => $description,
+                    			'size' => filesize($filename), // File size in bytes
+                    			'date' => filemtime($filename) // Last modified timestamp
+                		];
+            		}
     		}
-
 		//Arrage the list
 		if($sort_mode == "orig"){
 			//do nothing
@@ -62,20 +58,15 @@
 		
 		//Output the List
 		if($mode == "list"){
-			fputcsv($output, ["Filename"]);
 			foreach ($image_data as $img) {
-                        	fputcsv($output, [
-                                	'<img src="' . $img['filename']  . '" alt= "' . $img['description'] . '" width="400">'
-                        	]);
-                	}
-
+                        	fputcsv($output, [$img['filename']]);
+			}
+			
 		}
 		else if($mode == "matrix"){
-			fputcsv($output, ["Column 1", "Column 2", "Column 3"]); // Header row
-
-    			$row = [];
+			$row = [];
     			foreach ($image_data as $index => $img) {
-        			$row[] = '<img src="' . $img['filename'] . '" alt= "' . $img['description'] . '" width="200">';
+        			$row[] = $img['filename'];
         
 			        if (($index + 1) % 3 == 0) {
             				fputcsv($output, $row);
@@ -88,10 +79,9 @@
     			}	
 		}
 		else if($mode == "details"){
-			fputcsv($output, ["Details"]);
                         foreach ($image_data as $img) {
                                 fputcsv($output, [
-                                        'Filename: '. $img['filename'] . '. Data: ' . $img['description']
+                                        'Filename: '. $img['filename'] . '. Description: ' . $img['description']
                                 ]);
                         }
 		}
@@ -99,7 +89,7 @@
 			die("Invalid Display Mode");
 		}
 		
-		//proc_csv("output_file.csv");
+		proc_csv("formatted_gallery.csv", $mode , "" , "ALL");
 	}
 
 ?>

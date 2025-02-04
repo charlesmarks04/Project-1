@@ -9,21 +9,39 @@
                     $delimiter = ',(?=(?:[^"]*"[^"]*")*[^"]*$)'; //delimiter to select all commas that arent included in quotes
                $firstPass = true;
                while($data = fgets($handle)) {
-                       echo "<tr>\n";
-                       $data_cols = preg_split("/" . $delimiter . "/", $data); //splits $data (horizontal lines of csv file) into individual array elements split by delimiter
-                       for($k=0; $k<count($data_cols); ++$k) {
-                                if($firstPass == true) {
-					if(in_array((string)($k+1), $column_numbers) || $columns_to_show === "ALL") //checks if $k+1 (column number) is equal to some value in $column_numbers (array of columns to show values) or if columns to show is ALL
-						echo " <td> <b> ".preg_replace("/".$quote."/", "", $data_cols[$k] )." </b> </td>\n"; //prints the first item of each column in bold
-                                }
-                                else {
-					if(in_array((string)($k+1), $column_numbers) || $columns_to_show === "ALL")
-                                        	echo "  <td> ".preg_replace("/".$quote."/", "", $data_cols[$k] )." </td>\n";
-                       		}
-		       }
-                       $firstPass = false; //boolean to keep track of column headers for them to be bold
-                       echo "</tr>\n";
-               }
+		       if($delimiter !== "matrix" && $delimiter !== "list" && $delimiter !== "details"){
+				echo "<tr>\n";
+                       		$data_cols = preg_split("/" . $delimiter . "/", $data); //splits $data (horizontal lines of csv file) into individual array elements split by delimiter
+                       		for($k=0; $k<count($data_cols); ++$k) {
+                                	if($firstPass == true) {
+						if(in_array((string)($k+1), $column_numbers) || $columns_to_show === "ALL") //checks if $k+1 (column number) is equal to some value in $column_numbers (array of columns to show values) or if columns to show is ALL
+							echo " <td> <b> ".preg_replace("/".$quote."/", "", $data_cols[$k] )." </b> </td>\n"; //prints the first item of each column in bold
+                                	}
+                                	else {
+						if(in_array((string)($k+1), $column_numbers) || $columns_to_show === "ALL")
+                                        		echo "  <td> ".preg_replace("/".$quote."/", "", $data_cols[$k] )." </td>\n";
+                       			}
+		       		}
+                       		$firstPass = false; //boolean to keep track of column headers for them to be bold
+                       		echo "</tr>\n";
+               		}else{
+				if($delimiter == "matrix" || $delimiter == "list"){	
+					$data_cols = preg_split("/,/", $data);
+                	                for($k=0; $k<count($data_cols); ++$k) {
+						echo "<td> <img src= \"". $data_cols[$k] . "\" alt= \"" . $delimiter . "\"width=\"200\"> </td>\n";
+					}
+				
+				}else if($delimiter == "details"){
+					$data =  preg_replace("/\"/", "", $data );
+					if(trim($data) !== ""){
+						echo "<td>" . $data . "</td>";
+					}
+				}
+			
+				echo "</tr>\n";
+			}
+
+	       }
                fclose($handle);
                echo "</table>\n<p/>";
 	}
