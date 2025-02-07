@@ -20,7 +20,7 @@
 	if (filter_var($searchingFor,FILTER_SANITIZE_STRING)) { //sanitizing input
 		$searchingFor = strip_tags($searchingFor); //removing html tags from the input
 		echo "<h2> Showing Results for '" . $searchingFor . "'... </h2>"; //heading for if the search is valid
-		$pages = ["index.php", "csv.php", "markdown.php", "gallery.php"]; //array of web pages
+		$pages = ["index.php", "csv.php", "markdown.php", "gallery.php", "blog.php"]; //array of web pages
 		foreach($pages as $page){ //for loop to go through each page
 		
 			$internal_url = "http://host.docker.internal:5555/" . $page; //interal url to be used when searching because file_get_contents didnt like the localhost url
