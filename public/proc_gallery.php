@@ -2,6 +2,7 @@
 
         //echo "<h1> Gallery </h1>\n";
 
+
 	function proc_gallery($image_list_filename, $mode, $sort_mode){
 		// $mode == "list"	   : list of large images view
    		// $mode == "matrix"	   : image matrix view (3 columns)
